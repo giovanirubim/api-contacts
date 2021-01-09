@@ -1,0 +1,5 @@
+# Dependências NPM
+node_modules/
+
+# Arquivo de configurações
+.env
