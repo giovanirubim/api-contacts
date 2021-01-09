@@ -9,7 +9,7 @@ dotenv.config()
 const {
 	env: {
 		JWT_SECRET,
-		SERVER_PORT = 80
+		SERVER_PORT = 8080
 	}
 } = process
 
@@ -48,8 +48,8 @@ app.use((req, res, next) => {
 	}
 
 	// Valida a data de expiração do token
-	const { iat } = payload
-	if (iat <= currTimestamp()) {
+	const { exp } = payload
+	if (exp <= currTimestamp()) {
 		return res.status(403).json({
 			message: 'The provided token has expired'
 		})

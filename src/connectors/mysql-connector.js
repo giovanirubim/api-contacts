@@ -2,7 +2,7 @@ const mysql = require('mysql')
 
 const {
 	env: {
-		MYSQL_ROOT_HOST = 'localhost',
+		MYSQL_ROOT_HOST = 'mysql',
 		MYSQL_USER = 'root',
 		MYSQL_PASSWORD = '',
 		MYSQL_DATABASE = 'macapa',

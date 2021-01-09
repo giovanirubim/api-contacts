@@ -1,5 +1,6 @@
 const prepare = require('mysql').escape
 const mysqlConnector = require('./connectors/mysql-connector')
+const postgresConnector = require('./connectors/postgres-connector')
 
 // Insere um contato no banco do cliente de Macapá
 const addMacapaContact = async (conn, contact) => {
@@ -39,20 +40,23 @@ const addVarejaoContact = async (conn, contact) => {
 
 	// Insere registro no banco
 	const res = await conn.query(`
-		INSERT INTO contacts
-		SET
-			nome = ${prepare(name)},
-			celular = ${prepare(cellphone)}
+		INSERT INTO contacts (
+			nome, celular
+		) VALUES (
+			${prepare(name)},
+			${prepare(cellphone)}
+		)
+		RETURNING id
 	`)
 
-	return { key: res.insertId }
+	return { key: res.rows[0].id }
 }
 
 module.exports.addContact = (req, res) => {
 
 	const { clientName } = req.jwt
 	let conn = null
-	let connector = clientName === 'macapa'? mysqlConnector: null
+	let connector = clientName === 'macapa'? mysqlConnector: postgresConnector
 		
 	// Realiza conexão com o servidor e adiciona o contato
 	connector.connect()
